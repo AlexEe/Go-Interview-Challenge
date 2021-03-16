@@ -12,7 +12,7 @@ The following challenge has been designed with junior to mid-level engineers in 
 ## What do the files look like to the interviewees?
 We are sending them the instructions.go, store.go files.
 
-## What issues are in the instructions.go file?
+## Issues in the instructions.go file
 - All functions could be unexported since they are all in the `main` package.
 - All functions, since they are exported, should have docstring.
 - `CreateAndValidateInstruction()` could be 2 functions.
@@ -23,10 +23,9 @@ We are sending them the instructions.go, store.go files.
 - `Start_before_end()` function should be a method on Instruction instead of taking Instruction as a parameter.
 - `HasSufficientPower()` could be a single line.
 
-## What issues are store.go file?
+## Issues in the store.go file
 - All functions could be unexported since they are all in the `main` package.
 - All functions, since they are exported, should have docstring.
-- GetAssetByName function contains logic to connect to the database. Should be put into separate Open() database function.
 - Connection details for database should be retrieved from env vars or config file, not hard-coded.
 
 ## Interview progression and possible questions
@@ -35,7 +34,7 @@ We are sending them the instructions.go, store.go files.
 - Have them explain code back to you and ask if they have questions.
 - Ask them to write the `Start_before_end()` check.
 - Ask them to write a unit test for the `Start_before_end()` check.
-- Ask them how this function could be made into more idiomatic Go code.
+- Ask them how this function could be made into more idiomatic Go code. (CamelCase)
 - If they don't suggest it themselves, ask them to re-write the function to be a method on `Instruction`.
 - Ask more generally how they might refactor the code in the `instructions.go` file.
 - Move onto `store.go` file and let them read through code. Ask to have it explained it back to you.
