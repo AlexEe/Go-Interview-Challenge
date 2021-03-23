@@ -19,7 +19,6 @@ Generally, be kind and helpful. Pay attention to how they deal with being stuck:
 - Have them explain code back to you and ask if they have questions.
 - Ask them to create a new Instruction instance in the `CreateAndValidateInstruction()` function.
 - Ask them to add the `Start_before_end()` check to the `CreateAndValidateInstruction()` function.
-- Ask them to write a unit test for the `Start_before_end()` check.
 - Ask them how this function could be made into more idiomatic Go code. (CamelCase)
 - If they don't suggest it themselves, ask them to re-write the function to be a method on `Instruction`.
 - Ask more generally how they might refactor the code in the `instructions.go` file (see list below).
