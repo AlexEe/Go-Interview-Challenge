@@ -41,12 +41,6 @@ func (a AssetInstructor) CreateAndValidateInstruction(start, end time.Time, powe
 	}
 
 	// Create new Instruction instance here.
-	i = Instruction{
-		Asset: asset,
-		Start: start,
-		End:   end,
-		Power: power,
-	}
 
 	// Add 'StartBeforeEnd' check here.
 

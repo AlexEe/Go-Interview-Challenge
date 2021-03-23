@@ -5,14 +5,17 @@ import (
 	"fmt"
 )
 
+// Store represents a service for retrieving asset information.
 type Store interface {
 	GetAssetByName(asset string) (*Asset, error)
 }
 
+// PostgresStore is the PostgreSQL database manager.
 type PostgresStore struct {
 	DB *sql.DB
 }
 
+// Open creates a database connection to a Postgres instance.
 func (p *PostgresStore) Open(hostport int, hostname, username, password, dbname string) error {
 	conn := fmt.Sprintf("port=%d host=%s user=%s "+
 		"password=%s dbname=%s sslmode=disable",
@@ -32,6 +35,7 @@ func (p *PostgresStore) Open(hostport int, hostname, username, password, dbname 
 	return nil
 }
 
+// GetAssetByName retrieves and returns an asset's data from the db.
 func (p *PostgresStore) GetAssetByName(assetName string) (*Asset, error) {
 	// Create database query.
 	query := fmt.Sprintf(`

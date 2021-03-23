@@ -5,19 +5,20 @@ The following challenge has been designed with junior to mid-level engineers in 
 - Basic Go concepts: structs, interfaces, unit tests, error checking and mocking.
 - Go naming conventions: encapsulation, CamelCase.
 - Writing unit tests for existing functions.
-- Creating a mock store for testing.
-- SQL.
+- Using interfaces to mock out a database call.
 - Refactoring non-idiomatic code.
+- Optional: SQL.
 
 ## What are we sending to interviewees and when?
-We are sending them the instructions.go, store.go files at the start of the interview.
+We are sending them the instruction.go, instruction_test.go, main.go, store.go files at the start of the interview.
 
 ## Interview progression and possible questions
 Generally, be kind and helpful. Pay attention to how they deal with being stuck: Are they able to ask specific questions?
-- First explain general scenario: Trader suggestion for instruction (with params asset name, start, end, power) needs to be validated.
-- Start with `instructions.go` file:
+- First explain general scenario by showing the main.go file: Trader input for potential instruction (with params asset name, start, end, power) needs to be validated.
+- Go to `instructions.go` file:
 - Have them explain code back to you and ask if they have questions.
-- Ask them to write the `Start_before_end()` check.
+- Ask them to create a new Instruction instance in the `CreateAndValidateInstruction()` function.
+- Ask them to add the `Start_before_end()` check to the `CreateAndValidateInstruction()` function.
 - Ask them to write a unit test for the `Start_before_end()` check.
 - Ask them how this function could be made into more idiomatic Go code. (CamelCase)
 - If they don't suggest it themselves, ask them to re-write the function to be a method on `Instruction`.
@@ -26,7 +27,9 @@ Generally, be kind and helpful. Pay attention to how they deal with being stuck:
 - Ask how they would test the `GetAssetByName()` function.
 - We want them to suggest creating a mock database using the `Store` interface to mock out the db return values.
 - If they don't get there: Ask about `Store` interface and the purpose of an interface.
-- Ask how they would refactor the `store.go` file (see list below).
+- Go to instruction_test.go file and have them explain how the MockStore works.
+- Let them run the tests: First test fails because end is before start.
+- Let them add a second test which fails because instructed power exceeds max asset power.
 - Optional: SQL questions.
 - What is a foreign key and where is it used in the SQL query? (technologies.id)
 - What kind of join is taking place on line 54? (Inner join)
@@ -43,8 +46,5 @@ We are not expecting them to find all of these, but this should provide ample op
 - `Start_before_end()` function should be a method on Instruction instead of taking Instruction as a parameter.
 - `HasSufficientPower()` could be a single line.
 
-## All issues in the store.go file
-We are expecting them to at least notice the issue with the hard-coded password.
-- All functions could be unexported since they are all in the `main` package.
-- All functions, since they are exported, should have docstring.
-- Connection details for database should be retrieved from env vars or config file, not hard-coded.
+## All issues in the main.go file
+- Postgres connection details should be retrieved from config file or env vars.
