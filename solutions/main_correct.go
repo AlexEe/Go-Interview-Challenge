@@ -1,4 +1,4 @@
-package main
+package solutions
 
 import (
 	"fmt"
@@ -6,10 +6,11 @@ import (
 	"time"
 )
 
+// Should be retrieved from Env Vars or Config file
 const (
 	hostname = "localhost"
 	hostport = 5432
-	username = "limejump"
+	username = "postgres"
 	password = "password"
 	dbname   = "assets"
 )
@@ -29,17 +30,15 @@ func main() {
 	}
 	defer postgres.DB.Close()
 
-	// Create Asset Instructor.
+	// Create Asset Instructor
 	a := AssetInstructor{
 		Store: &postgres,
 	}
 
-	// Create and validate new instruction.
+	// Create and validate new instruction
 	instruction, err := a.CreateAndValidateInstruction(start, end, power, asset_name)
 	if err != nil {
 		os.Exit(0)
 	}
-
-	// Send instruction onto owl.
 	fmt.Printf("New instruction: %+v", instruction)
 }

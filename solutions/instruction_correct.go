@@ -1,4 +1,4 @@
-package main
+package solutions
 
 import (
 	"fmt"
@@ -30,9 +30,9 @@ type Asset struct {
 	Technology string `json:"technology" db:"technology"`
 }
 
-// A function that takes in start, end, power and asset name, performs various checks and returns a validated instruction.
+// CreateAndValidateInstruction returns a validated instruction.
 func (a AssetInstructor) CreateAndValidateInstruction(start, end time.Time, power int, asset_name string) (Instruction, error) {
-	var i Instruction
+	// Get asset from database.
 	asset, _ := a.Store.GetAssetByName(asset_name)
 
 	// Check asset power capacity.
@@ -40,23 +40,28 @@ func (a AssetInstructor) CreateAndValidateInstruction(start, end time.Time, powe
 		return Instruction{}, fmt.Errorf("Instruction rejected: Asset max power is %v, instructed power is %v", asset.MaxPower, power)
 	}
 
-	// Create new Instruction instance here.
-	i = Instruction{
+	// Create new Instruction instance.
+	i := Instruction{
 		Asset: asset,
 		Start: start,
 		End:   end,
 		Power: power,
 	}
 
-	// Add 'StartBeforeEnd' check here.
+	// Check start time is before end time.
+	if !i.StartBeforeEnd() {
+		return Instruction{}, fmt.Errorf("Instruction rejected: Instruction start %v is after instruction end %v", i.Start, i.End)
+	}
 
 	return i, nil
 }
 
-func Start_before_end(i Instruction) bool {
+// StartBeforeEnd checks if instruction start is before instruction end.
+func (i Instruction) StartBeforeEnd() bool {
 	return i.Start.Before(i.End)
 }
 
+// HasSufficientPower compares instructed power to asset's max power capacity.
 func (a Asset) HasSufficientPower(power int) bool {
 	result := a.MaxPower >= power
 	return result
