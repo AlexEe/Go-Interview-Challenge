@@ -63,6 +63,5 @@ func (i Instruction) StartBeforeEnd() bool {
 
 // HasSufficientPower compares instructed power to asset's max power capacity.
 func (a Asset) HasSufficientPower(power int) bool {
-	result := a.MaxPower >= power
-	return result
+	return a.MaxPower >= power
 }
