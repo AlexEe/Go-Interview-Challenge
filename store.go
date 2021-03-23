@@ -5,30 +5,22 @@ import (
 	"fmt"
 )
 
-const (
-	hostname     = "localhost"
-	hostport     = 5432
-	user         = "postgres"
-	password     = "password"
-	databasename = "assets"
-)
-
 type Store interface {
-	GetAssetByName(asset string) Asset
+	GetAssetByName(asset string) (*Asset, error)
 }
 
 type PostgresStore struct {
 	DB *sql.DB
 }
 
-func (p *PostgresStore) Open(hostport int, hostname, username, password, dbname string) (*sql.DB, error) {
+func (p *PostgresStore) Open(hostport int, hostname, username, password, dbname string) error {
 	conn := fmt.Sprintf("port=%d host=%s user=%s "+
 		"password=%s dbname=%s sslmode=disable",
 		hostport, hostname, username, password, dbname)
 	var err error
 	p.DB, err = sql.Open("postgres", conn)
 	if err != nil {
-		return nil, err
+		return err
 	}
 	defer p.DB.Close()
 
@@ -37,13 +29,10 @@ func (p *PostgresStore) Open(hostport int, hostname, username, password, dbname 
 		panic(err)
 	}
 
-	return p.DB, nil
+	return nil
 }
 
 func (p *PostgresStore) GetAssetByName(assetName string) (*Asset, error) {
-	// Open database connection.
-	p.Open(hostport, hostname, user, password, databasename)
-
 	// Create database query.
 	query := fmt.Sprintf(`
 		SELECT
