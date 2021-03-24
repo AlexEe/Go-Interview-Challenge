@@ -35,23 +35,20 @@ func (a AssetInstructor) CreateAndValidateInstruction(start, end time.Time, powe
 	var i Instruction
 	asset, _ := a.Store.GetAssetByName(asset_name)
 
-	// Check asset power capacity.
+	// Declare this function below.
 	if !asset.HasSufficientPower(power) {
 		return Instruction{}, fmt.Errorf("Instruction rejected: Asset max power is %v, instructed power is %v", asset.MaxPower, power)
 	}
 
 	// Create new Instruction instance here.
 
-	// Add 'StartBeforeEnd' check here.
+	// Call the 'Start_before_end' function here.
 
 	return i, nil
 }
 
+// Write HasSufficientPower function here.
+
 func Start_before_end(i Instruction) bool {
 	return i.Start.Before(i.End)
-}
-
-func (a Asset) HasSufficientPower(power int) bool {
-	result := a.MaxPower >= power
-	return result
 }

@@ -17,6 +17,7 @@ Generally, be kind and helpful. Pay attention to how they deal with being stuck:
 - First explain general scenario by showing the main.go file: Trader input for potential instruction (with params asset name, start, end, power) needs to be validated.
 - Go to `instructions.go` file:
 - Have them explain code back to you and ask if they have questions.
+- Ask them to write the `asset.HasSufficientPower()` method that is called in `CreateAndValidateInstruction()`.
 - Ask them to create a new Instruction instance in the `CreateAndValidateInstruction()` function.
 - Ask them to add the `Start_before_end()` check to the `CreateAndValidateInstruction()` function.
 - Ask them how this function could be made into more idiomatic Go code. (CamelCase)
