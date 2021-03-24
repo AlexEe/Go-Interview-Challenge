@@ -33,8 +33,10 @@ type Asset struct {
 // CreateAndValidateInstruction returns a validated instruction.
 func (a AssetInstructor) CreateAndValidateInstruction(start, end time.Time, power int, asset_name string) (Instruction, error) {
 	// Get asset from database.
-	asset, _ := a.Store.GetAssetByName(asset_name)
-
+	asset, err := a.Store.GetAssetByName(asset_name)
+	if err != nil {
+		return Instruction{}, fmt.Errorf("Instruction rejected: %v", err)
+	}
 	// Check asset power capacity.
 	if !asset.HasSufficientPower(power) {
 		return Instruction{}, fmt.Errorf("Instruction rejected: Asset max power is %v, instructed power is %v", asset.MaxPower, power)
