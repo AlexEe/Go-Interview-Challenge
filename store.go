@@ -5,9 +5,9 @@ import (
 	"fmt"
 )
 
-// Store represents a service for retrieving asset information.
+// Store represents a service for retrieving battery information.
 type Store interface {
-	GetAssetByName(asset string) (*Asset, error)
+	GetBatteryInformation(battery string) (*Battery, error)
 }
 
 // PostgresStore is the PostgreSQL database manager.
@@ -15,50 +15,29 @@ type PostgresStore struct {
 	DB *sql.DB
 }
 
-// Open creates a database connection to a Postgres instance.
-func (p *PostgresStore) Open(hostport int, hostname, username, password, dbname string) error {
-	conn := fmt.Sprintf("port=%d host=%s user=%s "+
-		"password=%s dbname=%s sslmode=disable",
-		hostport, hostname, username, password, dbname)
-	var err error
-	p.DB, err = sql.Open("postgres", conn)
-	if err != nil {
-		return err
-	}
-	defer p.DB.Close()
-
-	err = p.DB.Ping()
-	if err != nil {
-		panic(err)
-	}
-
-	return nil
-}
-
-// GetAssetByName retrieves and returns an asset's data from the db.
-func (p *PostgresStore) GetAssetByName(assetName string) (*Asset, error) {
+// GetBatteryInformation retrieves and returns an battery's data from the db.
+func (p PostgresStore) GetBatteryInformation(batteryName string) (*Battery, error) {
 	// Create database query.
 	query := fmt.Sprintf(`
 		SELECT
-			a.name,
-			t.type AS technology,
-			a.max_power,
-		FROM assets AS a
-		JOIN technologies AS t
-			ON a.technology_id = t.id
+			b.name,
+			c.max_power,
+		FROM batteries AS b
+		JOIN constraints AS c
+			ON b.id = c.battery_id
 		WHERE
-			a.name = $1
+			b.name = $1
 		LIMIT (1)
 	`)
 
 	// Query database.
-	a := &Asset{}
+	b := &Battery{}
 	rows, err := p.DB.Query(query)
 	for rows.Next() {
-		err = rows.Scan(&a.Name, &a.MaxPower, &a.Technology)
+		err = rows.Scan(&b.Name, &b.AvailablePower)
 		if err != nil {
-			return nil, fmt.Errorf("could not fetch asset by with name %s", assetName)
+			return nil, fmt.Errorf("could not fetch battery by with name %s", batteryName)
 		}
 	}
-	return a, nil
+	return b, nil
 }
