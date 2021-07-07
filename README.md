@@ -53,10 +53,6 @@ The interview is designed in multiple steps which should be followed in order: D
 We are not expecting them to find all of these, but this should provide ample opportunity to showcase knowledge about idiomatic Go.
 - All functions could be unexported since they are all in the `main` package.
 - All functions, since they are exported, should have docstring.
-- `ValidateRequest()` could be 2 functions.
-- `ValidateRequest()` should have documentation for separate steps.
 - Error returned by `GetBatteryInformation()` is not checked.
-- `ValidateRequest()` check for StartBeforeEnd needs to be added.
 - `Start_before_end()` function should be CamelCase.
 - `Start_before_end()` function should be a method on Request instead of taking Request as a parameter.
-- `HasSufficientPower()` could be a single line.
