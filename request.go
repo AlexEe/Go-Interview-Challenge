@@ -39,25 +39,25 @@ type Battery struct {
 
 // A function that takes in start, end, power and battery name, performs various checks and returns a validated request.
 func (v Validator) ValidateRequest(start, end time.Time, desiredPower int, battery_name string) (Request, error) {
-	// Retrieve information about the battery from our database.
+	// Retrieve battery information from our database.
 	battery, _ := v.Store.GetBatteryInformation(battery_name)
 
-	// Write this function below.
+	// To Do: Write this function below.
 	if !battery.HasSufficientPower(desiredPower) {
 		return Request{}, fmt.Errorf("Request rejected: available power is %v, desired power is %v", battery.AvailablePower, desiredPower)
 	}
 
-	// Create new Request instance here.
+	// To Do: Create new Request instance here.
 	var request Request
 
-	// Call the 'Start_before_end' function here.
+	// To Do: Call the 'Start_before_end' function here.
 
 	return request, nil
 }
 
-// Write a method here:
-// The method should be on the Battery struct and called HasSufficientPower.
-// This method should take in a parameter: the power of the request which the battery should deliver.
+// To Do: Write method HasSufficientPower here.
+// The method should be on the Battery struct.
+// This method should take in a parameter: the desired power of the request which the battery is asked to deliver.
 // The method should return a boolean of true if the battery has sufficient power to deliver the desired power,
 // and false if it cannot deliver the desired power.
 

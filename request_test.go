@@ -19,10 +19,10 @@ func TestBattery_HasSufficientPower(t *testing.T) {
 		want         bool
 	}{
 		{
-			// Add test case where the battery has sufficient power to deliver the desired Power.
+			// To Do: Add test case where the battery has sufficient power to deliver the desired Power.
 		},
 		{
-			// Add test case where the battery has insufficient power to deliver the desired Power.
+			// To Do: Add test case where the battery has insufficient power to deliver the desired Power.
 		},
 	}
 	for _, tc := range tests {
@@ -58,7 +58,7 @@ func TestValidator_ValidateRequest(t *testing.T) {
 		want         Request
 		wantErr      bool
 	}{
-		// Make this test pass.
+		// To Do: Make this test pass.
 		{
 			name:         "valid Request",
 			start:        time.Date(2020, 1, 1, 20, 0, 0, 0, time.UTC),
@@ -73,7 +73,7 @@ func TestValidator_ValidateRequest(t *testing.T) {
 			},
 			wantErr: false,
 		},
-		// Add new test case which will return an error due to insufficient power.
+		// To Do: Add new test case which will return an error due to insufficient power.
 	}
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
