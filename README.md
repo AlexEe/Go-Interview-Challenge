@@ -37,13 +37,13 @@ The interview is designed in multiple steps which should be followed in order: D
 - Write a test where the battery has sufficient power and one where the battery does not have sufficient power.
 
 3. For more advanced candidates: Mocking a database call using interfaces
-- Go to request_test.go file and have them explain how the MockStore works.
-- Let them run the tests: First test fails because end is before start.
-- Let them add a second test which fails because instructed power exceeds the available battery power.
 - Move onto `store.go` file and let them read through code. Ask to have it explained it back to you.
 - Ask how they would test the `GetBatteryInformation()` function.
 - We want them to suggest creating a mock database using the `Store` interface to mock out the db return values.
 - If they don't get there: Ask about `Store` interface and the purpose of an interface.
+- Go to request_test.go file and have them explain how the MockStore works.
+- Let them run the tests: First test fails because end is before start. Ask them to fix it.
+- Let them add a second test which returns an error because desired power exceeds the available battery power.
 
 4. Optional: SQL questions.
 - What is a foreign key and where is it used in the SQL query? (c.battery_id)
