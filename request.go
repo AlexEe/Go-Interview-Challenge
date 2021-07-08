@@ -42,20 +42,20 @@ func (v Validator) ValidateRequest(start, end time.Time, desiredPower int, batte
 	// Retrieve battery information from our database.
 	battery, _ := v.Store.GetBatteryInformation(battery_name)
 
-	// To Do: Write this function below.
+	// 1, To Do: Write this function below.
 	if !battery.HasSufficientPower(desiredPower) {
 		return Request{}, fmt.Errorf("Request rejected: available power is %v, desired power is %v", battery.AvailablePower, desiredPower)
 	}
 
-	// To Do: Create new Request instance here.
+	// 2, To Do: Create new Request instance here.
 	var request Request
 
-	// To Do: Call the 'Start_before_end' function here.
+	// 3, To Do: Call the 'Start_before_end' function here.
 
 	return request, nil
 }
 
-// To Do: Write method HasSufficientPower here.
+// 1, To Do: Write method HasSufficientPower here.
 // The method should be on the Battery struct.
 // This method should take in a parameter: the desired power of the request which the battery is asked to deliver.
 // The method should return a boolean of true if the battery has sufficient power to deliver the desired power,
