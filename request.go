@@ -42,7 +42,7 @@ func (v Validator) ValidateRequest(start, end time.Time, desiredPower int, batte
 	// Retrieve battery information from our database.
 	battery, _ := v.Store.GetBatteryInformation(battery_name)
 
-	// 1, To Do: Define this function below.
+	// 1, To Do: Write this function below.
 	if !battery.HasSufficientPower(desiredPower) {
 		return Request{}, fmt.Errorf("Request rejected: available power is %v, desired power is %v", battery.AvailablePower, desiredPower)
 	}

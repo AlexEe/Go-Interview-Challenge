@@ -27,7 +27,7 @@ The interview is designed in multiple steps which should be followed in order: D
 - Ask them to write the `Battery.HasSufficientPower()` method that is called in `ValidateRequest()`.
 - Ask them to create a new Request instance in the `ValidateRequest()` function.
 - Ask them to add the `Start_before_end()` check to the `ValidateRequest()` function.
-- Ask them how  the`Start_before_end()` function could be made into more idiomatic Go code. (CamelCase)
+- Ask them how this function could be made into more idiomatic Go code. (CamelCase)
 - If they don't suggest it themselves, ask them to re-write the function to be a method on `Request`.
 - Ask more generally how they might refactor the code in the `request.go` file (see list below).
 
@@ -38,11 +38,12 @@ The interview is designed in multiple steps which should be followed in order: D
 
 3. For more advanced candidates: Mocking a database call using interfaces
 - Move onto `store.go` file and let them read through code. Ask to have it explained it back to you.
-- Ask about `Store` interface and the purpose of an interface.
-- Ask how the `Store` interface could be used to mock out the database call in the `GetBatteryInformation` method.
-- Go back to `request_test.go` file and ask them to create a `MockStore` struct which implements the `Store` interface.
-- Have them complete the rest of the test for `Validate_Request` and run the test.
-- Test will fail due to start before end error, ask them to fix the test.
+- Ask how they would test the `GetBatteryInformation()` function.
+- We want them to suggest creating a mock database using the `Store` interface to mock out the db return values.
+- If they don't get there: Ask about `Store` interface and the purpose of an interface.
+- Go to request_test.go file and have them explain how the MockStore works.
+- Let them run the tests: First test fails because end is before start. Ask them to fix it.
+- Let them add a second test which returns an error because desired power exceeds the available battery power.
 
 4. Optional: SQL questions.
 - What is a foreign key and where is it used in the SQL query? (c.battery_id)

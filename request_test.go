@@ -7,6 +7,11 @@ import (
 )
 
 func TestBattery_HasSufficientPower(t *testing.T) {
+	battery := Battery{
+		Name:           "cool_battery",
+		AvailablePower: 100,
+	}
+
 	tests := []struct {
 		name         string
 		battery      Battery
@@ -14,10 +19,10 @@ func TestBattery_HasSufficientPower(t *testing.T) {
 		want         bool
 	}{
 		{
-			// 1, To Do: Add test case where the battery has sufficient power to deliver the desired Power.
+			// To Do: Add test case where the battery has sufficient power to deliver the desired Power.
 		},
 		{
-			// 2, To Do: Add test case where the battery has insufficient power to deliver the desired Power.
+			// To Do: Add test case where the battery has insufficient power to deliver the desired Power.
 		},
 	}
 	for _, tc := range tests {
@@ -30,11 +35,13 @@ func TestBattery_HasSufficientPower(t *testing.T) {
 	}
 }
 
-// 3, To Do: Create a MockStore struct to be able to mock out calls to the database.
-// The MockStore should have a field called Battery which is a pointer to a Battery struct.
+type MockStore struct {
+	Battery *Battery
+}
 
-// 4, To Do:
-// Ensure the MockStore implements the Store interface.
+func (m MockStore) GetBatteryInformation(batteryName string) (*Battery, error) {
+	return m.Battery, nil
+}
 
 func TestValidator_ValidateRequest(t *testing.T) {
 	testBattery := &Battery{
@@ -51,6 +58,7 @@ func TestValidator_ValidateRequest(t *testing.T) {
 		want         Request
 		wantErr      bool
 	}{
+		// To Do: Make this test pass.
 		{
 			name:         "valid Request",
 			start:        time.Date(2020, 1, 1, 20, 0, 0, 0, time.UTC),
@@ -65,20 +73,24 @@ func TestValidator_ValidateRequest(t *testing.T) {
 			},
 			wantErr: false,
 		},
-		// 8, To Do: Add new test case which will return an error due to insufficient power.
+		// To Do: Add new test case which will return an error due to insufficient power.
 	}
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
-			// 5, To Do:
-			// Create an instance of MockStore which takes in the testBattery.
-
-			// 6, To Do:
-			// Create an instance v of Validator which takes in the created MockStore instance.
-
-			// 7, To Do:
-			// Use v to call the ValidateRequest function with the test params and check
-			// a, if an error occured
-			// b, if the result from the function equals the "want" in the test case.
+			s := MockStore{
+				Battery: testBattery,
+			}
+			v := Validator{
+				Store: s,
+			}
+			got, err := v.ValidateRequest(tc.start, tc.end, tc.desiredPower, tc.battery_name)
+			if (err != nil) != tc.wantErr {
+				t.Errorf("got error %v, wantErr %v", err, tc.wantErr)
+				return
+			}
+			if !reflect.DeepEqual(got, tc.want) {
+				t.Errorf("got %v, want %v", got, tc.want)
+			}
 		})
 	}
 }
