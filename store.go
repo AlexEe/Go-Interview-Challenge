@@ -17,7 +17,6 @@ type PostgresStore struct {
 
 // GetBatteryInformation retrieves and returns an battery's data from the db.
 func (p PostgresStore) GetBatteryInformation(batteryName string) (*Battery, error) {
-	// Create database query.
 	query := fmt.Sprintf(`
 		SELECT
 			b.name,
@@ -30,7 +29,6 @@ func (p PostgresStore) GetBatteryInformation(batteryName string) (*Battery, erro
 		LIMIT (1)
 	`)
 
-	// Query database.
 	b := &Battery{}
 	rows, err := p.DB.Query(query)
 	for rows.Next() {
