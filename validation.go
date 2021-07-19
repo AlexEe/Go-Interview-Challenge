@@ -27,8 +27,9 @@ Only if both checks are successful, the request should be send on to the battery
 If not, an error should be returned.
 
 Acceptance criteria:
-- Both checks are performed inside the ValidateRequest function.
-- The provided unit tests are passing.
+- Add the missing logic to the incomplete functions 'HasSufficientPower' and 'StartBeforeEnd'.
+- Make sure both checks are performed inside the ValidateRequest function.
+- Make sure the provided unit tests are passing.
 */
 
 // Battery contains all the relevant information about a given battery.
@@ -46,7 +47,7 @@ type Request struct {
 }
 
 // ValidateRequest takes in start, end, power and battery name, performs various checks and returns an error if a check fails.
-func ValidateRequest(start, end time.Time, desiredPower int, battery Battery) error {
+func ValidateRequest(r Request) error {
 	return fmt.Errorf("no checks implemented")
 }
 

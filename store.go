@@ -1,50 +1,31 @@
 package main
 
 import (
-	"database/sql"
 	"fmt"
 )
 
 /*
 Ticket description:
-The parameters of of the ValidateRequest functions are changing!
-Our application is now only receiving the name of the battery which is to be turned on, not the complete Battery struct.
-The necessary information about this battery (its available power) need to be retrieved from a database.
+The parameters of the request coming into our application have changed!
+We no longer receive a complete Battery struct, including the available power, but only the battery's name.
+The available power for each battery must instead be retrieved with a call to our database.
 
 Acceptance criteria:
-- ValidateRequest takes in parameter called batteryName instead of battery which is a string.
+- Inside validation.go: In the Request struct, rename the Battery field to BatteryName and change its type to string.
 - Call the GetBattery function inside ValidateRequest to retrieve the battery with its available power.
-- Hint: To declare the PostgresStore simply write `p := PostgresStore{}`
+- Fix the unit tests.
+- Bonus: In validation_test.go, add a unit test to Test_ValidateRequest which returns the following error: 'battery fake_battery does not exist'.
 */
 
-// PostgresStore is the PostgreSQL database manager.
-type PostgresStore struct {
-	DB *sql.DB
-}
+var database = map[string]int{"cool_battery": 500, "awesome_battery": 1000}
 
 // GetBatteryInformation retrieves and returns an battery's data for a given battery name.
-func (p PostgresStore) GetBattery(batteryName string) (Battery, error) {
-	// Create database query.
-	query := fmt.Sprintf(`
-		SELECT
-			b.name,
-			c.max_power,
-		FROM batteries AS b
-		JOIN constraints AS c
-			ON b.id = c.battery_id
-		WHERE
-			b.name = $1
-		LIMIT (1)
-	`)
-
-	// Query database.
-	b := Battery{}
-	rows, err := p.DB.Query(query)
-	for rows.Next() {
-		err = rows.Scan(&b.Name, &b.AvailablePower)
-		if err != nil {
-			return Battery{}, fmt.Errorf("could not fetch battery by with name %s", batteryName)
-		}
+func GetBattery(batteryName string) (Battery, error) {
+	var b Battery
+	if availablePower, ok := database[batteryName]; ok {
+		b.AvailablePower = availablePower
+		b.Name = batteryName
+		return b, nil
 	}
-	return b, nil
+	return Battery{}, fmt.Errorf("battery %v does not exist", batteryName)
 }
