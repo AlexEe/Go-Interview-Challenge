@@ -5,18 +5,25 @@ import (
 	"fmt"
 )
 
-// Store represents a service for retrieving battery information.
-type Store interface {
-	GetBatteryInformation(battery string) (*Battery, error)
-}
+/*
+Ticket description:
+The parameters of of the ValidateRequest functions are changing!
+Our application is now only receiving the name of the battery which is to be turned on, not the complete Battery struct.
+The necessary information about this battery (its available power) need to be retrieved from a database.
+
+Acceptance criteria:
+- ValidateRequest takes in parameter called batteryName instead of battery which is a string.
+- Call the GetBattery function inside ValidateRequest to retrieve the battery with its available power.
+- Hint: To declare the PostgresStore simply write `p := PostgresStore{}`
+*/
 
 // PostgresStore is the PostgreSQL database manager.
 type PostgresStore struct {
 	DB *sql.DB
 }
 
-// GetBatteryInformation retrieves and returns an battery's data from the db.
-func (p PostgresStore) GetBatteryInformation(batteryName string) (*Battery, error) {
+// GetBatteryInformation retrieves and returns an battery's data for a given battery name.
+func (p PostgresStore) GetBattery(batteryName string) (Battery, error) {
 	// Create database query.
 	query := fmt.Sprintf(`
 		SELECT
@@ -31,12 +38,12 @@ func (p PostgresStore) GetBatteryInformation(batteryName string) (*Battery, erro
 	`)
 
 	// Query database.
-	b := &Battery{}
+	b := Battery{}
 	rows, err := p.DB.Query(query)
 	for rows.Next() {
 		err = rows.Scan(&b.Name, &b.AvailablePower)
 		if err != nil {
-			return nil, fmt.Errorf("could not fetch battery by with name %s", batteryName)
+			return Battery{}, fmt.Errorf("could not fetch battery by with name %s", batteryName)
 		}
 	}
 	return b, nil
