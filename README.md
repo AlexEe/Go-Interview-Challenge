@@ -7,6 +7,7 @@ You can find all files with correct unit tests and idiomatic go in the solutions
 
 ## What is being tested?
 - Basic Go concepts: structs, unit tests, refactoring, error checking and mocking.
+- Improving and adding to an existing piece of code.
 - Optional questions for mocking and interfaces.
 
 ## What are we sending to interviewees and when?
@@ -16,26 +17,30 @@ We are sending them the validation.go, validation_test.go, store.go files at the
 Generally, be kind and helpful if they have questions.
 For go-specific questions, remind them that they are allowed to use Google/ Stackoverflow etc.
 
-1. First ticket: basic Go knowledge (structs, logic, error checking)
-- Start with the `validation.go` file
+### 1. First ticket: basic Go knowledge (structs, logic, error checking)
+- The solutions for this ticket can be found in the `solutions/solutions_after_ticket_1` folder.
+- Start with the `validation.go` file.
 - Candidates should read through the instructions themselves. After they are done, ask if they understand the task and have any questions.
 - If they are stuck, suggest running the tests. There are unit tests for each of the three functions in the `validation_test.go` file.
 - If they need help with the time.Time package, suggest googling before providing them with the answer.
 - Once all tests pass, move on to the `store.go` file.
 - IMPORTANT: If they are stuck with this ticket, make sure to solve the challenges here first and do NOT move on to (or let them know about) the second ticket. Junior candidates are not expected to be able to fix both tickets in time.
 
-2. Second ticket: common Go knowledge (refactoring, unit tests)
+### 2. Second ticket: common Go knowledge (refactoring, unit tests)
+- The solutions for this ticket can be found in the `solutions/solutions_after_ticket_2` folder.
 - Have them read through the instructions in `store.go` for the second ticket, ask if they have questions.
+- After making the necessary changes to the Request struct, there will be errors to fix in `ValidateRequest` and the `TestValidateRequest` unit test. Make sure they rewrite the `ValidateRequest` function to use the Battery returned by the `GetBattery` function.
 - After all unit tests pass (and new unit test has been added), move on to the bonus questions.
 
-3. Bonus questions: more advanced Go knowledge (improving own code, best practices, mocking, interfaces)
-3.1 Suggest ways in which the functions in validation.go or store.go could be improved.
+### 3. Bonus questions: more advanced Go knowledge (improving own code, best practices, mocking, interfaces)
+
+#### 3.1 Suggest ways in which the functions in validation.go or store.go could be improved.
 - Depends on how they approached the task, but some likely improvements could be:
 - Make code cleaner: write `AvailablePower()` and `StartBeforeEnd()` in a single line.
 - Make code easier: `AvailablePower` could be a field on the `Battery` struct.
 - Make code more idiomatic: `StartBeforeEnd` could be a method on the `Request` struct.
 
-3.2 Imagine we had a postgreSQL database in `store.go` instead of the hardcoded one. How would you mock out a call to a real database?
+#### 3.2 Imagine we had a postgreSQL database in `store.go` instead of the hardcoded one. How would you mock out a call to a real database?
 Most common way to mock out a database call is by using an interface, e.g. called `Store`. This interface would have the `GetBattery` function on it.
 Every struct that has a method called `GetBattery` would then implement the `Store` interface.
 For the unit tests, a `MockStore` struct could be created which has a function named `GetBattery` but returns mocked out results.

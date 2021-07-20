@@ -6,14 +6,14 @@ import "fmt"
 Ticket description:
 Well done for solving the first ticket!
 Unfortunately, now parameters of the Request coming into our application have changed.
-Previously, the Request contained a full Battery struct, now it will only contain the name of the battery.
+Previously, the Request contained a full Battery instance, now it will only contain the name of the battery.
 The remaining information (FullPower and UsedPower) will need to be queried from our database.
 
 Acceptance criteria:
-- Inside validation.go: In the Request struct, rename the Battery field to BatteryName and change its type to string.
-- Call the GetBattery function inside ValidateRequest to retrieve the battery with its available power.
+- Inside validation.go: In the definition of the Request struct, rename the Battery field to BatteryName and change its type to string.
+- Call the GetBattery function inside ValidateRequest to retrieve the full Battery instance.
 - Fix unit tests and make sure they pass.
-- In validation_test.go, add a unit test to Test_ValidateRequest which returns an error because the battery name is not in the database.
+- In validation_test.go, add a unit test to TestValidateRequest which returns an error because the battery name is not in the database.
 
 Bonus:
 - Suggest ways in which the functions in validation.go or store.go could be improved.
