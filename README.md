@@ -55,7 +55,7 @@ For the unit tests, a `MockStore` struct could be created which has a function n
 - If time permits, should have at least partial answers to the Bonus questions.
 
 ### Senior-level developers (+4 years experience)
-- Interview has been designed for junior to mid-level. However, if no other interview challenge is available:
+- Interview has been designed for junior to mid-level developers. However, if no other interview challenge is available:
 - All of the above.
 - Should be able to confidently suggest ideas to improve code quality.
 - Should understand the concept of mocking and interfaces in Go.
