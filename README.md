@@ -2,56 +2,67 @@
 The following challenge has been designed with junior to mid-level engineers in mind.
 Moreover, the challenge is supposed to give candidates an idea about the work done by Limejump.
 The test scenario mimicks a small part of Asset Control's functionality: a request to switch a battery on has been received and now needs to be validated before being sent to the battery.
-The test as such focusses on Go features which are used frequently in the infrastructure team's codebase (structs, interfaces, unit tests, mocking) in favour of other features which we use less frequently (concurrency, channels, recursive functions).
+The test as such focusses on Go features which are used frequently in the infrastructure team's codebase (structs, interfaces, unit tests) in favour of other features which we use less frequently (concurrency, channels, recursive functions).
 You can find all files with correct unit tests and idiomatic go in the solutions folder.
 
 ## What is being tested?
-- Basic Go concepts: structs, interfaces, unit tests, error checking and mocking.
-- Go naming conventions: encapsulation, CamelCase.
-- Writing unit tests for existing functions.
-- Using interfaces to mock out a database call.
-- Refactoring non-idiomatic code.
-- Optional: SQL.
+- Basic Go concepts: structs, unit tests, refactoring, error checking and mocking.
+- Improving and adding to an existing piece of code.
+- Optional questions for mocking and interfaces.
 
 ## What are we sending to interviewees and when?
-We are sending them the request.go, request_test.go, main.go, store.go files at the start of the interview.
+We are sending them the validation.go, validation_test.go, store.go files at the start of the interview.
 
-## Interview progression and possible questions
-Generally, be kind and helpful. Pay attention to how they deal with being stuck: Are they able to ask specific questions?
-The interview is designed in multiple steps which should be followed in order: Depending on how fast/ experienced the developer is, advance to the next step or spend more time on the first ones. The difficulty increases with every additional step.
+## Interview progression
+Generally, be kind and helpful if they have questions.
+For go-specific questions, remind them that they are allowed to use Google/ Stackoverflow etc.
 
-1. Basic knowledge: idiomatic Go, implementing structs and writing methods/ functions:
-- First explain general scenario by showing the main.go file: Trader input for potential Request (with params battery name, start, end, desired power) needs to be validated.
-- Go to `request.go` file:
-- Have them explain code back to you and ask if they have questions.
-- Ask them to write the `Battery.HasSufficientPower()` method that is called in `ValidateRequest()`.
-- Ask them to create a new Request instance in the `ValidateRequest()` function.
-- Ask them to add the `Start_before_end()` check to the `ValidateRequest()` function.
-- Ask them how  the`Start_before_end()` function could be made into more idiomatic Go code. (CamelCase)
-- If they don't suggest it themselves, ask them to re-write the function to be a method on `Request`.
-- Ask more generally how they might refactor the code in the `request.go` file (see list below).
+### 1. First ticket: basic Go knowledge (structs, logic, error checking)
+- The solutions for this ticket can be found in the `solutions/solutions_after_ticket_1` folder.
+- Start with the `validation.go` file.
+- Candidates should read through the instructions themselves. After they are done, ask if they understand the task and have any questions.
+- If they are stuck, suggest running the tests. There are unit tests for each of the three functions in the `validation_test.go` file.
+- If they need help with the time.Time package, suggest googling before providing them with the answer.
+- Once all tests pass, move on to the `store.go` file.
+- IMPORTANT: If they are stuck with this ticket, make sure to solve the challenges here first and do NOT move on to (or let them know about) the second ticket. Junior candidates are not expected to be able to fix both tickets in time.
 
-2. Writing unit tests:
-- Go to the `request_test.go` file.
-- Ask them to complete the tests for the `Battery.HasSufficientPower` method.
-- Write a test where the battery has sufficient power and one where the battery does not have sufficient power.
+### 2. Second ticket: common Go knowledge (refactoring, unit tests)
+- The solutions for this ticket can be found in the `solutions/solutions_after_ticket_2` folder.
+- Have them read through the instructions in `store.go` for the second ticket, ask if they have questions.
+- After making the necessary changes to the Request struct, there will be errors to fix in `ValidateRequest` and the `TestValidateRequest` unit test. Make sure they rewrite the `ValidateRequest` function to use the Battery returned by the `GetBattery` function.
+- After all unit tests pass (and new unit test has been added), move on to the bonus questions.
 
-3. For more advanced candidates: Mocking a database call using interfaces
-- Move onto `store.go` file and let them read through code. Ask to have it explained it back to you.
-- Ask about `Store` interface and the purpose of an interface.
-- Ask how the `Store` interface could be used to mock out the database call in the `GetBatteryInformation` method.
-- Go back to `request_test.go` file and ask them to create a `MockStore` struct which implements the `Store` interface.
-- Have them complete the rest of the test for `Validate_Request` and run the test.
-- Test will fail due to start before end error, ask them to fix the test.
+### 3. Bonus questions: more advanced Go knowledge (improving own code, best practices, mocking, interfaces)
 
-4. Optional: SQL questions.
-- What is a foreign key and where is it used in the SQL query? (c.battery_id)
-- What kind of join is taking place on line 26? (Inner join)
+#### 3.1 Suggest ways in which the functions in validation.go or store.go could be improved.
+- Depends on how they approached the task, but some likely improvements could be:
+- Make code cleaner: write return of `AvailablePower()` and `StartBeforeEnd()` in a single line.
+- Improve error messages: Add specific values to error message, e.g. `fmt.Errorf("available power %d is less than desired power %d", availablePower, r.DesiredPower)`
+- Make code easier: `AvailablePower` could be a field on the `Battery` struct.
+- Make code more idiomatic: `StartBeforeEnd` could be a method on the `Request` struct.
 
-## All issues in the request.go file
-We are not expecting them to find all of these, but this should provide ample opportunity to showcase knowledge about idiomatic Go.
-- All functions could be unexported since they are all in the `main` package.
-- All functions, since they are exported, should have docstring.
-- Error returned by `GetBatteryInformation()` is not checked.
-- `Start_before_end()` function should be CamelCase.
-- `Start_before_end()` function should be a method on Request instead of taking Request as a parameter.
+#### 3.2 Imagine we had a postgreSQL database in `store.go` instead of the hardcoded one. How would you mock out a call to a real database?
+Most common way to mock out a database call is by using an interface, e.g. called `Store`. This interface would have the `GetBattery` function on it.
+Every struct that has a method called `GetBattery` would then implement the `Store` interface.
+For the unit tests, a `MockStore` struct could be created which has a function named `GetBattery` but returns mocked out results.
+
+## Interview expectations
+### Junior developers (<= 1 year experience)
+- Ask questions of the interviewer.
+- Use Google et al to close knowledge gaps.
+- Run and understand unit tests.
+- General understanding of structs and basic logic.
+- Should be able to finish parts or all of Ticket 1, with help.
+
+### Mid-level developers (2-3 year experience)
+- All of the above.
+- Ability to improve their own code, knowledge about best practices.
+- Should be able to finish Ticket 1 and most of Ticket 2.
+- If time permits, should have at least partial answers to the Bonus questions.
+
+### Senior-level developers (+4 years experience)
+- Interview has been designed for junior to mid-level developers. However, if no other interview challenge is available:
+- All of the above.
+- Should be able to confidently suggest ideas to improve code quality.
+- Should understand the concept of mocking and interfaces in Go.
+- Should confidently finish both tickets and answer Bonus questions.

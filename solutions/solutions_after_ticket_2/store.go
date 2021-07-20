@@ -20,9 +20,9 @@ Bonus:
 - Imagine we had a postgreSQL database instead of the hardcoded one. How would you mock out/ test a call to a real database?
 */
 
-var database = map[string][]int{"cool_battery": {500, 0}, "awesome_battery": {1000, 50}}
+var database = map[string][]int{"cool_battery": {500, 0}, "awesome_battery": {1000, 0}}
 
-// GetBattery retrieves and returns a Battery struct for a given battery name.
+// GetBattery retrieves and returns an battery's data for a given battery name.
 func GetBattery(batteryName string) (Battery, error) {
 	var b Battery
 	if data, ok := database[batteryName]; ok {
