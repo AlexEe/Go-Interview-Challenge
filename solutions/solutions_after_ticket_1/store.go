@@ -10,10 +10,10 @@ Previously, the Request contained a full Battery instance, now it will only cont
 The remaining information (FullPower and UsedPower) will need to be queried from our database.
 
 Acceptance criteria:
-- Inside validation.go: In definition of the Request struct, rename the Battery field to BatteryName and change its type to string.
+- Inside validation.go: In the definition of the Request struct, rename the Battery field to BatteryName and change its type to string.
 - Call the GetBattery function inside ValidateRequest to retrieve the full Battery instance.
 - Fix unit tests and make sure they pass.
-- In validation_test.go, add a unit test to Test_ValidateRequest which returns an error because the battery name is not in the database.
+- In validation_test.go, add a unit test to TestValidateRequest which returns an error because the battery name is not in the database.
 
 Bonus:
 - Suggest ways in which the functions in validation.go or store.go could be improved.
@@ -22,7 +22,7 @@ Bonus:
 
 var database = map[string][]int{"cool_battery": {500, 0}, "awesome_battery": {1000, 0}}
 
-// GetBatteryInformation retrieves and returns an battery's data for a given battery name.
+// GetBattery retrieves and returns an battery's data for a given battery name.
 func GetBattery(batteryName string) (Battery, error) {
 	var b Battery
 	if data, ok := database[batteryName]; ok {
