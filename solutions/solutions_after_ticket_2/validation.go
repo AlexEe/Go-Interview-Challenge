@@ -59,12 +59,13 @@ func ValidateRequest(r Request) error {
 		return err
 	}
 
-	if battery.AvailablePower() < r.DesiredPower {
-		return fmt.Errorf("available power is less than desired power")
+	availablePower := battery.AvailablePower()
+	if availablePower < r.DesiredPower {
+		return fmt.Errorf("available power %d is less than desired power %d", availablePower, r.DesiredPower)
 	}
 
 	if !StartBeforeEnd(r.Start, r.End) {
-		return fmt.Errorf("start time after end time")
+		return fmt.Errorf("start time %s after end time %s", r.Start, r.End)
 	}
 
 	return nil

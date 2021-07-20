@@ -36,7 +36,8 @@ For go-specific questions, remind them that they are allowed to use Google/ Stac
 
 #### 3.1 Suggest ways in which the functions in validation.go or store.go could be improved.
 - Depends on how they approached the task, but some likely improvements could be:
-- Make code cleaner: write `AvailablePower()` and `StartBeforeEnd()` in a single line.
+- Make code cleaner: write return of `AvailablePower()` and `StartBeforeEnd()` in a single line.
+- Improve error messages: Add specific values to error message, e.g. `fmt.Errorf("available power %d is less than desired power %d", availablePower, r.DesiredPower)`
 - Make code easier: `AvailablePower` could be a field on the `Battery` struct.
 - Make code more idiomatic: `StartBeforeEnd` could be a method on the `Request` struct.
 
