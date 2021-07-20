@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"time"
 )
 
@@ -28,14 +27,14 @@ If not, an error should be returned.
 
 Acceptance criteria:
 - Add the missing logic to the incomplete functions 'HasSufficientPower' and 'StartBeforeEnd'.
-- Make sure both checks are performed inside the ValidateRequest function.
+- Make sure both checks are called inside the ValidateRequest function.
 - Make sure the provided unit tests are passing.
 */
 
 // Battery contains all the relevant information about a given battery.
 type Battery struct {
-	Name           string `json:"name" db:"name"`
-	AvailablePower int    `json:"available_power" db:"available_power"`
+	Name           string
+	AvailablePower int
 }
 
 // Request contains all the information necessary to request power from a given battery.
@@ -46,12 +45,12 @@ type Request struct {
 	DesiredPower int
 }
 
-// ValidateRequest takes in start, end, power and battery name, performs various checks and returns an error if a check fails.
+// ValidateRequest performs various checks on a given request and returns an error if a check fails.
 func ValidateRequest(r Request) error {
-	return fmt.Errorf("no checks implemented")
+	return nil
 }
 
-// HasSufficientPower checks if the desired power of the request is less or equal to the available power on the battery.
+// HasSufficientPower checks if the available power on the battery is higher or equal to the desired power of the request.
 func (b Battery) HasSufficientPower(desiredPower int) bool {
 	return false
 }

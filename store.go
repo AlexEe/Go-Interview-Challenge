@@ -1,8 +1,6 @@
 package main
 
-import (
-	"fmt"
-)
+import "fmt"
 
 /*
 Ticket description:
@@ -13,8 +11,12 @@ The available power for each battery must instead be retrieved with a call to ou
 Acceptance criteria:
 - Inside validation.go: In the Request struct, rename the Battery field to BatteryName and change its type to string.
 - Call the GetBattery function inside ValidateRequest to retrieve the battery with its available power.
-- Fix the unit tests.
-- Bonus: In validation_test.go, add a unit test to Test_ValidateRequest which returns the following error: 'battery fake_battery does not exist'.
+- Fix unit tests and make sure they pass.
+- In validation_test.go, add a unit test to Test_ValidateRequest which returns an error because the battery name is not in the database.
+
+Bonus:
+- Suggest ways in which the functions in validation.go or store.go could be improved.
+- Imagine we had a postgreSQL database instead of the hardcoded one. How would you mock out/ test a call to a real database?
 */
 
 var database = map[string]int{"cool_battery": 500, "awesome_battery": 1000}
