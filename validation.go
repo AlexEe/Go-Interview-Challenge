@@ -1,6 +1,7 @@
-package main
+package solutions
 
 import (
+	"fmt"
 	"time"
 )
 
@@ -26,15 +27,21 @@ Only if both checks are successful, the request should be send on to the battery
 If not, an error should be returned.
 
 Acceptance criteria:
-- Add the missing logic to the incomplete functions 'HasSufficientPower' and 'StartBeforeEnd'.
-- Make sure both checks are called inside the ValidateRequest function.
+- Add the missing logic to the incomplete functions 'AvailablePower' and 'StartBeforeEnd'.
+- Add the checks (available power sufficient and start before end) to the ValidateRequest function.
+- If a check fails, a descriptive error should be returned.
 - Make sure the provided unit tests are passing.
+
+Tipp:
+- You can use any means you normally would to look up information about a method or package.
+- Any other questions, just ask!
 */
 
 // Battery contains all the relevant information about a given battery.
 type Battery struct {
-	Name           string
-	AvailablePower int
+	Name      string
+	FullPower int // FullPower describes the amount a battery can provide at full power, its maximum capacity.
+	UsedPower int // UsedPower describes the amount which has already been used or consumed.
 }
 
 // Request contains all the information necessary to request power from a given battery.
@@ -47,12 +54,12 @@ type Request struct {
 
 // ValidateRequest performs various checks on a given request and returns an error if a check fails.
 func ValidateRequest(r Request) error {
-	return nil
+	return fmt.Errorf("no checks added")
 }
 
-// HasSufficientPower checks if the available power on the battery is higher or equal to the desired power of the request.
-func (b Battery) HasSufficientPower(desiredPower int) bool {
-	return false
+// AvailablePower returns the available power of a given battery.
+func (b Battery) AvailablePower() int {
+	return 0
 }
 
 // StartBeforeEnd checks if the start time of a request is before its end time.

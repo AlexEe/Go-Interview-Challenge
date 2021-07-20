@@ -1,50 +1,49 @@
-package main
+package solutions
 
 import (
 	"testing"
 	"time"
 )
 
-func TestBattery_HasSufficientPower(t *testing.T) {
+func TestBattery_AvailablePower(t *testing.T) {
 	tests := []struct {
-		name         string
-		battery      Battery
-		desiredPower int
-		want         bool
+		name    string
+		battery Battery
+		want    int
 	}{
 		{
-			name: "battery has sufficient power",
+			name: "Some power used",
 			battery: Battery{
-				Name:           "cool_battery",
-				AvailablePower: 3000,
+				Name:      "cool_battery",
+				FullPower: 5000,
+				UsedPower: 4000,
 			},
-			desiredPower: 2000,
-			want:         true,
+			want: 1000,
 		},
 		{
-			name: "battery has exactly the same power",
+			name: "No power used",
 			battery: Battery{
-				Name:           "cool_battery",
-				AvailablePower: 2000,
+				Name:      "cool_battery",
+				FullPower: 2000,
+				UsedPower: 0,
 			},
-			desiredPower: 2000,
-			want:         true,
+			want: 2000,
 		},
 		{
-			name: "battery does not have enough power",
+			name: "All power used",
 			battery: Battery{
-				Name:           "cool_battery",
-				AvailablePower: 1000,
+				Name:      "cool_battery",
+				FullPower: 2000,
+				UsedPower: 2000,
 			},
-			desiredPower: 2000,
-			want:         false,
+			want: 0,
 		},
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
 			b := test.battery
-			if got := b.HasSufficientPower(test.desiredPower); got != test.want {
-				t.Errorf("got %v, want %v", got, test.want)
+			if got := b.AvailablePower(); got != test.want {
+				t.Errorf("got %d, want %d", got, test.want)
 			}
 		})
 	}
@@ -87,22 +86,23 @@ func TestStartBeforeEnd(t *testing.T) {
 
 func TestValidateRequest(t *testing.T) {
 	tests := []struct {
-		name       string
-		request    Request
-		returnsErr bool
+		name        string
+		request     Request
+		expectError bool
 	}{
 		{
-			name: "valid request",
+			name: "valid request: desired power is the same as available power",
 			request: Request{
 				Start:        time.Date(2020, 1, 1, 10, 0, 0, 0, time.UTC),
 				End:          time.Date(2020, 1, 1, 20, 0, 0, 0, time.UTC),
 				DesiredPower: 500,
 				Battery: Battery{
-					Name:           "cool_battery",
-					AvailablePower: 500,
+					Name:      "cool_battery",
+					FullPower: 500,
+					UsedPower: 0,
 				},
 			},
-			returnsErr: false,
+			expectError: false,
 		},
 		{
 			name: "invalid request: available power less than desired power",
@@ -111,11 +111,12 @@ func TestValidateRequest(t *testing.T) {
 				End:          time.Date(2020, 1, 1, 20, 0, 0, 0, time.UTC),
 				DesiredPower: 1000,
 				Battery: Battery{
-					Name:           "cool_battery",
-					AvailablePower: 500,
+					Name:      "cool_battery",
+					FullPower: 500,
+					UsedPower: 0,
 				},
 			},
-			returnsErr: true,
+			expectError: true,
 		},
 		{
 			name: "invalid request: start time after end time",
@@ -124,18 +125,19 @@ func TestValidateRequest(t *testing.T) {
 				End:          time.Date(2020, 1, 1, 20, 0, 0, 0, time.UTC),
 				DesiredPower: 500,
 				Battery: Battery{
-					Name:           "cool_battery",
-					AvailablePower: 500,
+					Name:      "cool_battery",
+					FullPower: 500,
+					UsedPower: 0,
 				},
 			},
-			returnsErr: true,
+			expectError: true,
 		},
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
 			err := ValidateRequest(test.request)
-			if err != nil && !test.returnsErr {
-				t.Errorf("got error '%v' want '%v'", err, test.returnsErr)
+			if err != nil && !test.expectError {
+				t.Errorf("got unexpected error: '%v'", err)
 			}
 		})
 	}
